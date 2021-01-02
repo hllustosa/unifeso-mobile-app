@@ -58,7 +58,7 @@ Primeiro, certifique-se de que você tem um dispositivo virtual Android em execu
 
 Após isso, execute o Metro, que é o software que nos auxiliar a criar Pacotes da nossa aplicação em React Native e a enviá-los para o celular físico ou virtual, permitindo os testes. O seguinte comando deve ser executado na pasta onde o repositório foi clonado, ou onde você criou seu projeto.
 
-    npx react-native start
+    npx react-native start --reset-cache
 
 Este comando irá manter o Metro Server em execução. Mantenha o terminal aberto com este comando em execução todo o tempo que estiver desenvolvendo e testando sua aplicação. Após isso, abra outra janela do terminal ou do PowerShell, e também no diretório onde o repositório foi clonado ou onde você criou seu projeto, execute:
 
