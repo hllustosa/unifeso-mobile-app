@@ -13,9 +13,11 @@ import {
   ListItem,
   Text,
   Title,
+  Right,
 } from 'native-base';
 
 import store from '../redux/store';
+import PersonRepository from '../repositories/person';
 import {SafeAreaView, StyleSheet, ScrollView, View} from 'react-native';
 import {useState} from 'react';
 
@@ -37,9 +39,29 @@ const styles = StyleSheet.create({
 export default function Lista(props) {
   const [people, setPeople] = useState([]);
 
+  const retrieveData = () => {
+    const repository = new PersonRepository();
+    repository.Retrieve((tx, results) => {
+      let data = [];
+      for (let i = 0; i < results.rows.length; i++) {
+        data.push(results.rows.item(i));
+      }
+      setPeople(data);
+    });
+  };
+
+  const deleteData = (id, onSuccess) => {
+    const func = () => {
+      const repository = new PersonRepository();
+      repository.Delete({id}, onSuccess);
+    };
+
+    return func;
+  };
+
   React.useEffect(() => {
-    setPeople(store.getState().people);
-  });
+    retrieveData();
+  }, []);
 
   return (
     <StyleProvider style={getTheme(Custom)}>
@@ -55,7 +77,27 @@ export default function Lista(props) {
               <List>
                 {people.map((person, index) => (
                   <ListItem key={`person-${index}`}>
-                    <Text>{person.name}</Text>
+                    <Body>
+                      <Text>{person.name}</Text>
+                    </Body>
+                    <Right>
+                      <Button
+                        icon
+                        dark
+                        primary
+                        style={{
+                          height: 50,
+                          width: 50,
+                        }}
+                        onPress={() => {
+                          const delFunc = deleteData(person.id, () => {
+                            retrieveData();
+                          });
+                          delFunc();
+                        }}>
+                        <Icon type="FontAwesome" name="trash" />
+                      </Button>
+                    </Right>
                   </ListItem>
                 ))}
               </List>
