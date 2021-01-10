@@ -13,12 +13,13 @@ import {
   ListItem,
   Text,
   Title,
+  Left,
   Right,
 } from 'native-base';
 
 import store from '../redux/store';
 import PersonRepository from '../repositories/person';
-import {SafeAreaView, StyleSheet, ScrollView, View} from 'react-native';
+import {SafeAreaView, StyleSheet, ScrollView, View, Image} from 'react-native';
 import {useState} from 'react';
 
 const styles = StyleSheet.create({
@@ -33,6 +34,12 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
+  },
+  photo: {
+    width: 50,
+    height: 50,
+    borderWidth: 2,
+    borderRadius: 25,
   },
 });
 
@@ -77,6 +84,12 @@ export default function Lista(props) {
               <List>
                 {people.map((person, index) => (
                   <ListItem key={`person-${index}`}>
+                    <Left>
+                      <Image
+                        style={styles.photo}
+                        source={{uri: `data:image/png;base64,${person.photo}`}}
+                      />
+                    </Left>
                     <Body>
                       <Text>{person.name}</Text>
                     </Body>

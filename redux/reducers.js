@@ -2,19 +2,37 @@ import {combineReducers} from 'redux';
 
 const INITIAL_STATE = {
   people: [],
+  photo: null
 };
 
 const addPersonReducer = (state, action) => {
-    const newState = Object.assign({}, state, {});
-    newState.people.push(action.payload);
-    return newState;
-}
+  const newState = Object.assign({}, state, {});
+  newState.people.push(action.payload);
+  return newState;
+};
+
+const saveTempPhotoReducer = (state, action) => {
+  const newState = Object.assign({}, state, {});
+  newState.photo = action.payload;
+  return newState;
+};
+
+const cleanTempPhotoReducer = (state, action) => {
+  const newState = Object.assign({}, state, {});
+  newState.photo = action.payload;
+  return newState;
+};
 
 const reducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case 'ADD_PERSON':
       return addPersonReducer(state, action);
-    default: return state;
+    case 'SAVE_TEMP_PHOTO':
+      return saveTempPhotoReducer(state, action);
+    case 'CLEAN_TEMP_PHOTO':
+      return cleanTempPhotoReducer(state, action);
+    default:
+      return state;
   }
 };
 

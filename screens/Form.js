@@ -16,7 +16,8 @@ import {
   Toast,
 } from 'native-base';
 
-import {SafeAreaView, StyleSheet, ScrollView, View} from 'react-native';
+import {SafeAreaView, StyleSheet, ScrollView, View, Image} from 'react-native';
+import CameraView from './Camera';
 import store from '../redux/store';
 import {ADD_PERSON} from '../redux/actions';
 import PersonRepository from '../repositories/person';
@@ -36,28 +37,52 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
   },
+  imageView: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  photo: {
+    padding: 10,
+    width: 188,
+    height: 251,
+    resizeMode: 'center',
+  },
 });
 
 export default function Lista(props) {
   const [name, setName] = useState('');
   const [birthday, setBirthday] = useState('');
+  const [photo, setPhoto] = useState(null);
+  const [showCamera, setShowCamera] = useState(false);
 
   const savePerson = () => {
-
     const repository = new PersonRepository();
     //Adicionando nova pessoa
-    
-    repository.Save({name, birthday}, () => {
-      //Informando que o cadastro foi feito com sucesso
-      alert('Salvo com Sucesso');
 
-      //Retornando a tela inicial
-      const navigation = props.navigation;
-      navigation.replace('List');
-    }, (e) => {
-      alert('Erro durante salvamento');
-    });
+    repository.Save(
+      {name, birthday, photo},
+      () => {
+        //Informando que o cadastro foi feito com sucesso
+        alert('Salvo com Sucesso');
+
+        //Retornando a tela inicial
+        const navigation = props.navigation;
+        navigation.replace('List');
+      },
+      (e) => {
+        alert('Erro durante salvamento');
+      },
+    );
   };
+
+  const openCamera = () => {
+    setShowCamera(true);
+  };
+
+  if (showCamera) {
+    return <CameraView setShowCamera={setShowCamera} setPhoto={setPhoto} />;
+  }
 
   return (
     <StyleProvider style={getTheme(Custom)}>
@@ -70,6 +95,13 @@ export default function Lista(props) {
           </Header>
           <Content style={styles.content}>
             <ScrollView style={styles.scrollView}>
+              <View style={styles.imageView}>
+                <Image
+                  style={styles.photo}
+                  source={{uri: `data:image/png;base64,${photo}`}}
+                />
+              </View>
+
               <Form>
                 <Item>
                   <Input
@@ -93,6 +125,24 @@ export default function Lista(props) {
         <View
           style={{
             position: 'absolute',
+            bottom: 95,
+            right: 25,
+          }}>
+          <Button
+            rounded
+            dark
+            style={{
+              height: 55,
+              width: 55,
+            }}
+            onPress={openCamera}>
+            <Icon type="FontAwesome" name="camera" />
+          </Button>
+        </View>
+
+        <View
+          style={{
+            position: 'absolute',
             bottom: 25,
             right: 25,
           }}>
@@ -100,8 +150,8 @@ export default function Lista(props) {
             rounded
             dark
             style={{
-              height: 50,
-              width: 50,
+              height: 55,
+              width: 55,
             }}
             onPress={savePerson}>
             <Icon type="FontAwesome" name="save" />
