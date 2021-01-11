@@ -21,7 +21,8 @@ import CameraView from './Camera';
 import store from '../redux/store';
 import {ADD_PERSON} from '../redux/actions';
 import PersonRepository from '../repositories/person';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
+import Geolocation from '@react-native-community/geolocation';
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -54,6 +55,7 @@ export default function Lista(props) {
   const [name, setName] = useState('');
   const [birthday, setBirthday] = useState('');
   const [photo, setPhoto] = useState(null);
+  const [location, setLocation] = useState({});
   const [showCamera, setShowCamera] = useState(false);
 
   const savePerson = () => {
@@ -61,7 +63,7 @@ export default function Lista(props) {
     //Adicionando nova pessoa
 
     repository.Save(
-      {name, birthday, photo},
+      {name, birthday, photo, location},
       () => {
         //Informando que o cadastro foi feito com sucesso
         alert('Salvo com Sucesso');
@@ -71,7 +73,7 @@ export default function Lista(props) {
         navigation.replace('List');
       },
       (e) => {
-        alert('Erro durante salvamento');
+        alert('Erro durante salvamento ' + JSON.stringify(e));
       },
     );
   };
@@ -79,6 +81,25 @@ export default function Lista(props) {
   const openCamera = () => {
     setShowCamera(true);
   };
+
+  const findCoordinates = () => {
+    Geolocation.getCurrentPosition(
+      (position) => {
+        if (position.coords) {
+          setLocation({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          });
+        }
+      },
+      (error) => Alert.alert(error.message),
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
+    );
+  };
+
+  useEffect(() => {
+    findCoordinates();
+  }, []);
 
   if (showCamera) {
     return <CameraView setShowCamera={setShowCamera} setPhoto={setPhoto} />;

@@ -3,11 +3,11 @@ import {openDatabase} from 'react-native-sqlite-storage';
 export default class PersonRepository {
   DBNAME = 'app.db';
   CREATE =
-    'CREATE TABLE IF NOT EXISTS person(id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(100), birthday VARCHAR(10), photo TEXT)';
+    'CREATE TABLE IF NOT EXISTS person(id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(100), birthday VARCHAR(10), photo TEXT, latitude double, longitude double)';
 
   SELECT = 'SELECT * FROM person';
 
-  INSERT = 'INSERT INTO person (name, birthday, photo) values (?, ?, ?)';
+  INSERT = 'INSERT INTO person (name, birthday, photo, latitude, longitude) values (?, ?, ?, ?, ?)';
 
   DELETE = 'DELETE FROM person WHERE id = ?';
 
@@ -26,7 +26,7 @@ export default class PersonRepository {
       transaction.executeSql(this.CREATE, []);
       transaction.executeSql(
         this.INSERT,
-        [person.name, person.birthday, person.photo],
+        [person.name, person.birthday, person.photo, person.location.latitude, person.location.longitude],
         onSuccess,
         onError,
       );

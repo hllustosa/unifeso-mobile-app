@@ -36,8 +36,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   photo: {
-    width: 50,
-    height: 50,
+    width: 30,
+    height: 30,
     borderWidth: 2,
     borderRadius: 25,
   },
@@ -84,16 +84,18 @@ export default function Lista(props) {
               <List>
                 {people.map((person, index) => (
                   <ListItem key={`person-${index}`}>
-                    <Left>
+                    <Left style={{flex:0.15}}>
                       <Image
                         style={styles.photo}
                         source={{uri: `data:image/png;base64,${person.photo}`}}
                       />
                     </Left>
                     <Body>
-                      <Text>{person.name}</Text>
+                      <Text>{person.name + '\n' + 
+                      (!person.latitude ?  "" :  person.latitude.toFixed(2)) 
+                      + " " +  (!person.longitude ?  "" :person.longitude.toFixed(2)) }</Text>
                     </Body>
-                    <Right>
+                    <Right style={{flex:0.15}}>
                       <Button
                         icon
                         dark
