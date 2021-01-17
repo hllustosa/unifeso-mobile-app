@@ -4,7 +4,7 @@ import {Provider} from 'react-redux';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import Splash from './screens/Splash';
+import Login from './screens/Login';
 import List from './screens/List';
 import Form from './screens/Form';
 import Camera from './screens/Camera';
@@ -21,7 +21,7 @@ const App = () =>
             screenOptions={{
               headerShown: false,
             }}>
-            <Stack.Screen name="Splash" component={Splash} />
+            <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="List" component={List} />
             <Stack.Screen name="Form" component={Form} />
             <Stack.Screen name="Camera" component={Camera} />

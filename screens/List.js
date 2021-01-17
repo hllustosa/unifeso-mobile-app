@@ -48,12 +48,8 @@ export default function Lista(props) {
 
   const retrieveData = () => {
     const repository = new PersonRepository();
-    repository.Retrieve((tx, results) => {
-      let data = [];
-      for (let i = 0; i < results.rows.length; i++) {
-        data.push(results.rows.item(i));
-      }
-      setPeople(data);
+    repository.Retrieve((results) => {
+      setPeople(results.rows);
     });
   };
 

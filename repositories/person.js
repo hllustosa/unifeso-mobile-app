@@ -1,43 +1,43 @@
-import {openDatabase} from 'react-native-sqlite-storage';
+import store from '../redux/store';
 
 export default class PersonRepository {
-  DBNAME = 'app.db';
-  CREATE =
-    'CREATE TABLE IF NOT EXISTS person(id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(100), birthday VARCHAR(10), photo TEXT, latitude double, longitude double)';
-
-  SELECT = 'SELECT * FROM person';
-
-  INSERT = 'INSERT INTO person (name, birthday, photo, latitude, longitude) values (?, ?, ?, ?, ?)';
-
-  DELETE = 'DELETE FROM person WHERE id = ?';
-
   Retrieve(onSuccess, onError) {
-    var db = openDatabase({name: this.DBNAME});
-    db.transaction((transaction) => {
-      transaction.executeSql(this.CREATE, []);
-      transaction.executeSql(this.SELECT, [], onSuccess, onError);
-    });
+    return fetch('http://10.0.2.2:8080/people', {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'x-access-token': store.getState().token,
+      },
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        onSuccess({rows: json});
+      })
+      .catch((error) => {
+        alert(error);
+        onError(error);
+      });
   }
 
   Save(person, onSuccess, onError) {
-    var db = openDatabase({name: this.DBNAME});
-
-    db.transaction((transaction) => {
-      transaction.executeSql(this.CREATE, []);
-      transaction.executeSql(
-        this.INSERT,
-        [person.name, person.birthday, person.photo, person.location.latitude, person.location.longitude],
-        onSuccess,
-        onError,
-      );
-    });
+    return fetch('http://10.0.2.2:8080/people', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'x-access-token': store.getState().token,
+      },
+      body: JSON.stringify(person),
+    })
+      .then(() => {
+        onSuccess();
+      })
+      .catch((error) => {
+        alert(JSON.stringify(error))
+        onSuccess(error);
+      });
   }
 
-  Delete(person, onSuccess, onError) {
-    var db = openDatabase({name: this.DBNAME});
-
-    db.transaction((transaction) => {
-      transaction.executeSql(this.DELETE, [person.id], onSuccess, onError);
-    });
-  }
+  Delete(person, onSuccess, onError) {}
 }
