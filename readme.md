@@ -47,12 +47,14 @@ Adicione também a pasta `%LOCALAPPDATA%\Android\Sdk\platform-tools` na variáve
 
 ## Execução da Aplicação        
 
-É possível criar uma nova aplicação de React Native com o seguinte comando:
+Caso queira, é possível criar uma nova aplicação de React Native com o seguinte comando:
 
     npx react-native init [nome do meu projeto aqui] 
 
 Use o comando acima apenas parar criar um novo projeto do zero. Caso você clone este repositório, 
-basta usar os seguintes comandos para executá-lo. 
+basta usar os seguintes comandos para executá-lo. Acesse o diretório principal e execute o comando de instalação das dependências:
+
+    npm install  
 
 Primeiro, certifique-se de que você tem um dispositivo virtual Android em execução na sua máquina. Ou, se quiser testar o App em um dispositivo físico, conecte via USB um Celular Android na máquina. Este dispositivo deve estar com as opções de desenvolvedor ativas assim como a [depuração USB também ativa](https://developer.android.com/studio/debug/dev-options).
 
