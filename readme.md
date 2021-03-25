@@ -4,7 +4,7 @@ Projeto de teste para disciplina de Desenvolvimento de Aplicações Móveis
 
 Siga os passos abaixo para configurar seu ambiente de desenvolvimento no Windows.
 Para levantar o ambiente no sistema operacional Linux siga a 
-[documentação oficisal](https://reactnative.dev/docs/environment-setup)
+[documentação oficial](https://reactnative.dev/docs/environment-setup)
 
 ### Instalar o gerenciador de pacotes Chocolatey
 
@@ -13,13 +13,22 @@ e dependências utilizadas no nosso ambiente de desenvolvimento. Para instalar o
 
     Set-ExecutionPolicy Bypass -Scope Process -Force [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 
+Caso não consiga instalar o Chocolatey, vá para a seção (Instalar Dependências Manualmente).
 
-### Instalar Dependências
+### Instalar Dependências Com Chocolatey
 
 Com a ajuda do Chocolatey, iremos instalar duas dependências necessárias para a execução do código produzido com o React Native. As dependências são o NodeJs que é o software que provê o ambiente para a execução do JavaScript e uma série de ferramentas úteis. Junto com o NodeJS será instalado a React Native CLI (Command Line Interface) que possibilita a execução de comandos para 
 gerar pacotes de código e executar testes em dispositivos virtuais e físicos.
 
     choco install -y nodejs.install openjdk8
+
+### Instalar Dependências Manualmente
+
+Caso não tenha conseguido instalar o Chocolatey por algum motivo, baixe e instale manualmente os seguintes softwares:
+
+[Baixar o NodeJS](https://nodejs.org/en/)
+
+[Java SDK](oracle.com/java/technologies/javase/javase-jdk8-downloads.html)
 
 ### Instalar o Android Studio
 
@@ -38,9 +47,15 @@ Uma vez com o Android Studio Instalado, execute o AVD Manager para baixar uma im
 do sistema Android (Baixe uma versão igual ou superior ao Android 10.0) e crie um novo
 dispositivo virtual.
 
+Para aprender como criar um dispositivo virtual, siga o link:
+
+[Criar Dispositivos no AVD] https://developer.android.com/studio/run/managing-avds?hl=pt-br
+
 Também configure as seguintes variáveis de ambiente:
 
 `ANDROID_HOME` deve conter o valor `%LOCALAPPDATA%\Android\Sdk`
+
+Caso não saiba como fazer isso, acesse [esse tutorial](https://professor-falken.com/pt/windows/como-configurar-la-ruta-y-las-variables-de-entorno-en-windows-10/).
 
 Adicione também a pasta `%LOCALAPPDATA%\Android\Sdk\platform-tools` na variável de ambiente `Path`.
 
@@ -68,3 +83,13 @@ Este comando irá manter o Metro Server em execução. Mantenha o terminal abert
    
 O resultado esperado é seu projeto em execução nos dispositivos disponíveis no momento.
 	
+## Problemas Com Licenças
+
+Caso ao executar os comandos de inicialização do aplicativo você receba a seguinte mensagem:
+
+    Failed to install the following android SDK packages as some licenses have not been accepted
+
+Execute o seguinte comando (lembre-se que as variáveis de ambiente deve estar configuradas corretamente):
+
+    %ANDROID_HOME%/tools/bin/sdkmanager --licenses
+
